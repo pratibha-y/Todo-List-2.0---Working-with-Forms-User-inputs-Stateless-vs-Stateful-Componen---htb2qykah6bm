@@ -1,26 +1,19 @@
 import React from "react";
-import ListRender from "./ListRender";
 
-const Today = (props) => {
-  const date = new Date();
-  const filteredList = props.list.filter((task) => {
-    if (date.getFullYear() !== task.date.getFullYear()) {
-      return false;
-    }
-    if (date.getMonth() !== task.date.getMonth()) {
-      return false;
-    }
-    if (date.getDate() !== task.date.getDate()) {
-      return false;
-    }
-    return true;
-  });
-
+const ListRender = (props) => {
   return (
-    <div id="today-list">
-      <ListRender list={filteredList} />
-    </div>
+    <>
+      {props.list.map((list) => {
+        return (
+          <div className="box" key={list.number}>
+            <div className="task">
+              {list.title} ({list.date.toLocaleDateString()})
+            </div>
+          </div>
+        );
+      })}
+    </>
   );
 };
 
-export default Today;
+export default ListRender;
