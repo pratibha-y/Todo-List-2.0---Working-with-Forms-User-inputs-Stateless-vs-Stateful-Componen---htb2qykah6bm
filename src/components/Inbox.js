@@ -2,37 +2,57 @@ import React, { useState, useRef } from "react";
 
 const Inbox = (props) => {
   const [newTask, setNewTask] = useState(false);
-  const titleInput = useRef(null);
-  const dateInput = useRef(null);
-  const addATask = (e)=>{
-    if(!titleInput.current.value) return;
-    let itemObj = {
-      title: titleInput.current.value,
-      date: new Date (dateInput.current.value),
+
+  const titleRef = useRef(null);
+  const calendarRef = useRef(null);
+
+  const newTaskHandler = (e) => {
+    setNewTask(true);
+  };
+
+  const addHandler = (e) => {
+    e.preventDefault();
+    if (titleRef.current.value === "") {
+      window.alert("Task cannot be empty");
+      return;
     }
-    props.append(itemObj);
+    let newObj = {
+      number: props.list.length + 1,
+      title: titleRef.current.value,
+      date: new Date(calendarRef.current.value),
+    };
+    props.append(newObj);
     setNewTask(false);
-    console.log(props.list);
-  }
+  };
+
+  const cancelHandler = (e) => {
+    setNewTask(false);
+  };
+
   return (
     <div>
       <h3>Inbox</h3>
       {!newTask && (
-        <button className="new" onClick={()=>setNewTask(true)} id='add-new'>
+        <button className="new" onClick={newTaskHandler} id='add-new'>
           +Add New
         </button>
       )}
       {newTask && (
-        <form className="newtask-box" onSubmit={(e)=>e.preventDefault()}>
-          <input type="text" id="title" ref={titleInput}></input>
+        <form className="newtask-box">
+          <input type="text" id="title" ref={titleRef}></input>
           <div className="buttons">
-            <button className="new" id="add-list" onClick={addATask}>
+            <button className="new" id="add-list" onClick={addHandler}>
               Add Task
             </button>
-            <button className="new" onClick={()=>setNewTask(false)}>
+            <button className="new" onClick={cancelHandler}>
               Cancel
             </button>
-            <input type="date" ref={dateInput} defaultValue="2022-09-27" id="date" ></input>
+            <input
+              type="date"
+              ref={calendarRef}
+              defaultValue="2022-09-27"
+              id="date"
+            ></input>
           </div>
         </form>
       )}
@@ -41,7 +61,7 @@ const Inbox = (props) => {
           return (
             <div className="box" key={list.number}>
               <div className="task">
-                {list.title} ({list.date.toLocaleDateString()});
+                {list.title} ({list.date.toLocaleDateString()})
               </div>
             </div>
           );
