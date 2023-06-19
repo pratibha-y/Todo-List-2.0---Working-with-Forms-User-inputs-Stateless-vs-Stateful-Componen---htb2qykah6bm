@@ -10,19 +10,18 @@ const list = [
 ];
 
 const MainSection = (props) => {
-  const [filteredList, setFilteredList] = useState(list);
-  const addToList = (obj) => {
-    list.push(obj);
-    setFilteredList(list);
-  };
+  const [nlist,setList]=useState(list);
+  const addListItem=(item)=>{
+    setList([...nlist,item]);
+  }
 
   return (
     <div className="main-section">
       {props.active === "INBOX" && (
-        <Inbox list={filteredList} append={addToList} />
+        <Inbox list={nlist} append={addListItem} />
       )}
-      {props.active === "TODAY" && <Today list={filteredList} />}
-      {props.active === "NEXT" && <Next7Days list={filteredList} />}
+      {props.active === "TODAY" && <Today list={nlist} />}
+      {props.active === "NEXT" && <Next7Days list={nlist} />}
     </div>
   );
 };
