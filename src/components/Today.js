@@ -3,22 +3,15 @@ import ListRender from "./ListRender";
 
 const Today = (props) => {
   const date = new Date();
-  const filteredList = props.list.filter((task) => {
-    if (date.getFullYear() !== task.date.getFullYear()) {
-      return false;
-    }
-    if (date.getMonth() !== task.date.getMonth()) {
-      return false;
-    }
-    if (date.getDate() !== task.date.getDate()) {
-      return false;
-    }
-    return true;
-  });
+  const nlist = [];
 
   return (
-    <div id="today-list">
-      <ListRender list={filteredList} />
+    <div id="today-list">{props.list.map((item) => {
+      if (item.date.getDate() === date.getDate()) {
+        nlist.push(item)
+      }})}
+      <div>``</div>
+      <ListRender list={nlist} />
     </div>
   );
 };
