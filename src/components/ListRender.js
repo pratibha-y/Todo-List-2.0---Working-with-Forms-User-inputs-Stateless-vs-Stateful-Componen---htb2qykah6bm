@@ -1,19 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
+import Inbox from "./Inbox";
+import Next7Days from "./Next7Days";
+import Today from "./Today";
 
-const ListRender = (props) => {
+const list = [
+  { number: 1, title: "Let's complete this", date: new Date("9/27/2022") },
+  { number: 2, title: "Should sleep at 9pm", date: new Date("9/28/2022") },
+  { number: 3, title: "Should complete react", date: new Date("10/5/2022") },
+];
+
+const MainSection = (props) => {
+  const [nlist,setList]=useState(list);
+  const addListItem=(item)=>{
+    setList([...nlist,item]);
+  }
+
   return (
-    <>
-      {props.list.map((list) => {
-        return (
-          <div className="box" key={list.number}>
-            <div className="task">
-              {list.title} ({list.date.toLocaleDateString()})
-            </div>
-          </div>
-        );
-      })}
-    </>
+    <div className="main-section">
+      {props.active === "INBOX" && (
+        <Inbox list={nlist} append={addListItem} />
+      )}
+      {props.active === "TODAY" && <Today list={nlist} />}
+      {props.active === "NEXT" && <Next7Days list={nlist} />}
+    </div>
   );
 };
 
-export default ListRender;
+export default MainSection;
